@@ -394,6 +394,8 @@ export function ImportCalculator() {
                         <SelectContent>
                           <SelectItem value="7">7 hari</SelectItem>
                           <SelectItem value="14">14 hari</SelectItem>
+                          <SelectItem value="21">21 hari</SelectItem>
+                          <SelectItem value="30">30 hari</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
