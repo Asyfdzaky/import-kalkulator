@@ -463,7 +463,8 @@ export function ImportCalculator() {
                               <ResultRow label="Insurance" value={result.insurance} />
                             </>
                           )}
-                          <ResultRow label="Nilai Pabean (CIF)" value={result.customsValue} isHighlight />
+                          <ResultRow label="Nilai Pabean" value={result.customsValue} isHighlight />
+                          <ResultRow label="Nilai Impor" value={result.importValue} isHighlight />
                         </div>
                       </div>
 
@@ -474,11 +475,10 @@ export function ImportCalculator() {
                         </h4>
                         <div className="space-y-1">
                           <ResultRow label="Bea Masuk (BM)" value={result.beaMasuk} />
-                          <ResultRow label="Nilai Impor" value={result.importValue} isHighlight />
                           <ResultRow label="PPN" value={result.ppn} />
                           <ResultRow label="PPh" value={result.pph} />
                           <ResultRow label="PPnBM" value={result.ppnbm} />
-                          <ResultRow label="Total Bea & Pajak" value={result.totalDutiesTaxes} isHighlight />
+                          <ResultRow label="Total BM dan PDRI" value={result.totalDutiesTaxes} isHighlight />
                         </div>
                       </div>
 
