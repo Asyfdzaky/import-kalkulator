@@ -22,6 +22,7 @@ import {
   getExchangeRate,
   getCurrencyLabel,
 } from "@/lib/importCalculations";
+import headerImage from "@/assets/header.png";
 import { STORAGE_RATE_PER_KG_DAY } from "@/lib/importCalculations";
 import { CalculationInput, CalculationResult } from "@/types";
 import { Calculator, RotateCcw, DollarSign, Ship, FileText, Truck, Package } from "lucide-react";
@@ -65,8 +66,18 @@ export function ImportCalculator() {
   const currencyLabel = getCurrencyLabel(input.currency);
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-background">
+      {/* Header Banner */}
+      <div className="w-full">
+        <img 
+          src={headerImage} 
+          alt="PAL Indonesia - Calculate EXIM" 
+          className="w-full h-auto object-cover"
+        />
+      </div>
+
+      <div className="py-8 px-4">
+        <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center gap-3 mb-3">
@@ -403,6 +414,7 @@ export function ImportCalculator() {
         <div className="text-center mt-12 text-sm text-muted-foreground">
           <p>Import Simulation Calculator © 2024</p>
           <p className="mt-1">Simulasi ini hanya untuk estimasi, bukan perhitungan resmi.</p>
+        </div>
         </div>
       </div>
     </div>
