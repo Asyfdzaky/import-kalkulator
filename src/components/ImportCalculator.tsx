@@ -494,9 +494,16 @@ export function ImportCalculator() {
                         </div>
                       </div>
 
-                      {/* Total DDP */}
+                      {/* Estimasi Barang Nilai DDP */}
                       <div className="pt-2">
-                        <ResultRow label="TOTAL DDP" value={result.totalDDP} isTotal />
+                        <ResultRow label="Estimasi Barang Nilai DDP" value={result.totalDDP} isTotal />
+                      </div>
+                      
+                      {/* Taraa Message */}
+                      <div className="mt-4 p-4 bg-primary/10 rounded-lg border border-primary/30 text-center">
+                        <p className="text-base font-semibold text-foreground">
+                          💥 TARAA!! Kamu harus bayar sejumlah Rp {formatCurrency(result.totalDDP)} 💸
+                        </p>
                       </div>
                     </div>
                   ) : (
