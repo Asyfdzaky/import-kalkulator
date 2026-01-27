@@ -58,7 +58,7 @@ export function getTruckingCost(truckingType: string): number {
   return option?.price || 0;
 }
 
-export function calculateImportCosts(input: CalculationInput): CalculationResult {
+export function calculateImportCosts(input: CalculationInput, storageWeight: number = 0): CalculationResult {
   const exchangeRate = getExchangeRate(input.currency);
   const goodsValueIDR = input.goodsValue * exchangeRate;
 
@@ -86,7 +86,7 @@ export function calculateImportCosts(input: CalculationInput): CalculationResult
 
   // Inland transport
   const truckingCost = getTruckingCost(input.truckingType);
-  const storageCost = STORAGE_RATE_PER_KG_DAY * input.storageWeight * input.storageDays;
+  const storageCost = STORAGE_RATE_PER_KG_DAY * storageWeight * input.storageDays;
   const totalInlandTransport = truckingCost + storageCost;
 
   // Total DDP
