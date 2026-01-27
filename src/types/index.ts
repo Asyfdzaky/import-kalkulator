@@ -23,6 +23,7 @@ export interface CalculationInput {
   goodsValue: number;
   incoterm: "CIF" | "FOB";
   region?: string;
+  hsCode?: string;
   bmRate: number;
   ppnRate: number;
   pphRate: number;
