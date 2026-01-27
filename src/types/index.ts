@@ -10,6 +10,14 @@ export interface TruckingOption {
   price: number;
 }
 
+export interface BasicInfo {
+  namaBarang: string;
+  beratBarang: number;
+  kegiatan: "Impor" | "Ekspor";
+  negaraAsal: string;
+  tanggalRencana: Date | undefined;
+}
+
 export interface CalculationInput {
   currency: string;
   goodsValue: number;
