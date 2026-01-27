@@ -382,13 +382,21 @@ export function ImportCalculator() {
                       onChange={(value) => updateInput("storageWeight", value)}
                       suffix=" kg"
                     />
-                    <CurrencyInput
-                      id="storageDays"
-                      label="Lama Timbun (hari)"
-                      value={input.storageDays}
-                      onChange={(value) => updateInput("storageDays", value)}
-                      suffix=" hari"
-                    />
+                    <div className="input-wrapper">
+                      <Label>Lama Timbun</Label>
+                      <Select
+                        value={input.storageDays.toString()}
+                        onValueChange={(value) => updateInput("storageDays", parseInt(value))}
+                      >
+                        <SelectTrigger className="bg-card">
+                          <SelectValue placeholder="Pilih lama timbun" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="7">7 hari</SelectItem>
+                          <SelectItem value="14">14 hari</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Biaya timbun: Rp {formatCurrency(STORAGE_RATE_PER_KG_DAY)}/kg/hari
