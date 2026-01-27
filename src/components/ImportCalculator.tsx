@@ -19,7 +19,8 @@ import {
 import headerImage from "@/assets/header.png";
 import { STORAGE_RATE_PER_KG_DAY } from "@/lib/importCalculations";
 import { CalculationInput, CalculationResult } from "@/types";
-import { Calculator, RotateCcw, DollarSign, Ship, FileText, Truck, Package } from "lucide-react";
+import { Calculator, RotateCcw, DollarSign, Ship, FileText, Truck, Package, ExternalLink } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const initialState: CalculationInput = {
   currency: "USD",
@@ -182,7 +183,19 @@ export function ImportCalculator() {
                     Bea Masuk & Pajak Impor
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-4">
+                  <div className="input-wrapper">
+                    <Label htmlFor="hsCode">Kode HS</Label>
+                    <Input
+                      id="hsCode"
+                      type="text"
+                      placeholder="Contoh: 8471.30.10"
+                      value={input.hsCode || ""}
+                      onChange={(e) => updateInput("hsCode", e.target.value)}
+                      className="bg-card"
+                    />
+                  </div>
+                  
                   <div className="grid grid-cols-2 gap-4">
                     <PercentageInput
                       id="bmRate"
@@ -208,6 +221,23 @@ export function ImportCalculator() {
                       value={input.ppnbmRate}
                       onChange={(value) => updateInput("ppnbmRate", value)}
                     />
+                  </div>
+                  
+                  <div className="p-3 bg-secondary/50 rounded-lg border border-border">
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Tarif Bea Masuk, PPN, PPh, dan PPnBM dapat dilihat berdasarkan Kode HS di website INSW:
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      asChild
+                    >
+                      <a href="https://www.insw.go.id/intr" target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        Cek Tarif di INSW
+                      </a>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
