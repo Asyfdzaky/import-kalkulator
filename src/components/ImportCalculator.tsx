@@ -85,12 +85,7 @@ export function ImportCalculator() {
 
       <div className="py-8 px-4">
         <div className="max-w-5xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center gap-3 mb-3"></div>
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Import Simulation Calculator</h1>
-            <p className="text-muted-foreground text-lg">Simulasi biaya impor Indonesia - Kalkulasi Total DDP</p>
-          </div>
+          {/* Header removed */}
 
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Left Column - Inputs */}
