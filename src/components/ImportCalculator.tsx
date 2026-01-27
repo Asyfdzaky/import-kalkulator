@@ -63,7 +63,7 @@ export function ImportCalculator() {
   };
 
   const handleCalculate = () => {
-    const calculationResult = calculateImportCosts(input);
+    const calculationResult = calculateImportCosts(input, basicInfo.beratBarang);
     setResult(calculationResult);
   };
 
@@ -369,31 +369,22 @@ export function ImportCalculator() {
                     </Select>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <CurrencyInput
-                      id="storageWeight"
-                      label="Berat (kg)"
-                      value={input.storageWeight}
-                      onChange={(value) => updateInput("storageWeight", value)}
-                      suffix=" kg"
-                    />
-                    <div className="input-wrapper">
-                      <Label>Lama Timbun</Label>
-                      <Select
-                        value={input.storageDays.toString()}
-                        onValueChange={(value) => updateInput("storageDays", parseInt(value))}
-                      >
-                        <SelectTrigger className="bg-card">
-                          <SelectValue placeholder="Pilih lama timbun" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="7">7 hari</SelectItem>
-                          <SelectItem value="14">14 hari</SelectItem>
-                          <SelectItem value="21">21 hari</SelectItem>
-                          <SelectItem value="30">30 hari</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div className="input-wrapper">
+                    <Label>Lama Timbun</Label>
+                    <Select
+                      value={input.storageDays.toString()}
+                      onValueChange={(value) => updateInput("storageDays", parseInt(value))}
+                    >
+                      <SelectTrigger className="bg-card">
+                        <SelectValue placeholder="Pilih lama timbun" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="7">7 hari</SelectItem>
+                        <SelectItem value="14">14 hari</SelectItem>
+                        <SelectItem value="21">21 hari</SelectItem>
+                        <SelectItem value="30">30 hari</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Biaya timbun: Rp {formatCurrency(STORAGE_RATE_PER_KG_DAY)}/kg/hari
