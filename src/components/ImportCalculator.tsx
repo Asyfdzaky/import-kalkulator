@@ -1,8 +1,13 @@
 import { useState } from "react";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CurrencyInput } from "./CurrencyInput";
 import { PercentageInput } from "./PercentageInput";
 import { ResultRow } from "./ResultRow";
@@ -18,9 +23,9 @@ import {
 } from "@/lib/importCalculations";
 import headerImage from "@/assets/header.png";
 import { STORAGE_RATE_PER_KG_DAY } from "@/lib/importCalculations";
-import { CalculationInput, CalculationResult } from "@/types";
-import { Calculator, RotateCcw, DollarSign, Ship, FileText, Truck, Package, ExternalLink } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { BasicInfo, CalculationInput, CalculationResult } from "@/types";
+import { Calculator, RotateCcw, DollarSign, Ship, FileText, Truck, Package, ExternalLink, Info, CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const initialState: CalculationInput = {
   currency: "USD",
@@ -36,12 +41,25 @@ const initialState: CalculationInput = {
   storageDays: 0,
 };
 
+const initialBasicInfo: BasicInfo = {
+  namaBarang: "",
+  beratBarang: 0,
+  kegiatan: "Impor",
+  negaraAsal: "",
+  tanggalRencana: undefined,
+};
+
 export function ImportCalculator() {
   const [input, setInput] = useState<CalculationInput>(initialState);
+  const [basicInfo, setBasicInfo] = useState<BasicInfo>(initialBasicInfo);
   const [result, setResult] = useState<CalculationResult | null>(null);
 
   const updateInput = <K extends keyof CalculationInput>(key: K, value: CalculationInput[K]) => {
     setInput((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const updateBasicInfo = <K extends keyof BasicInfo>(key: K, value: BasicInfo[K]) => {
+    setBasicInfo((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleCalculate = () => {
@@ -51,6 +69,7 @@ export function ImportCalculator() {
 
   const handleReset = () => {
     setInput(initialState);
+    setBasicInfo(initialBasicInfo);
     setResult(null);
   };
 
@@ -76,7 +95,95 @@ export function ImportCalculator() {
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Left Column - Inputs */}
             <div className="space-y-6">
-              {/* Currency & Goods Value */}
+              {/* Informasi Dasar */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Info className="h-5 w-5 text-primary" />
+                    Informasi Dasar
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="input-wrapper">
+                      <Label htmlFor="namaBarang">Nama Barang</Label>
+                      <Input
+                        id="namaBarang"
+                        type="text"
+                        placeholder="Contoh: Mesin CNC"
+                        value={basicInfo.namaBarang}
+                        onChange={(e) => updateBasicInfo("namaBarang", e.target.value)}
+                        className="bg-card"
+                      />
+                    </div>
+                    <div className="input-wrapper">
+                      <Label htmlFor="beratBarang">Berat Barang (kg)</Label>
+                      <Input
+                        id="beratBarang"
+                        type="number"
+                        placeholder="0"
+                        value={basicInfo.beratBarang || ""}
+                        onChange={(e) => updateBasicInfo("beratBarang", parseFloat(e.target.value) || 0)}
+                        className="bg-card"
+                      />
+                    </div>
+                    <div className="input-wrapper">
+                      <Label>Kegiatan</Label>
+                      <Select
+                        value={basicInfo.kegiatan}
+                        onValueChange={(value: "Impor" | "Ekspor") => updateBasicInfo("kegiatan", value)}
+                      >
+                        <SelectTrigger className="bg-card">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Impor">Impor</SelectItem>
+                          <SelectItem value="Ekspor">Ekspor</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="input-wrapper">
+                      <Label htmlFor="negaraAsal">Negara Asal</Label>
+                      <Input
+                        id="negaraAsal"
+                        type="text"
+                        placeholder="Contoh: China"
+                        value={basicInfo.negaraAsal}
+                        onChange={(e) => updateBasicInfo("negaraAsal", e.target.value)}
+                        className="bg-card"
+                      />
+                    </div>
+                  </div>
+                  <div className="input-wrapper">
+                    <Label>Tanggal Rencana</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal bg-card",
+                            !basicInfo.tanggalRencana && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {basicInfo.tanggalRencana
+                            ? format(basicInfo.tanggalRencana, "PPP", { locale: id })
+                            : "Pilih tanggal"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={basicInfo.tanggalRencana}
+                          onSelect={(date) => updateBasicInfo("tanggalRencana", date)}
+                          initialFocus
+                          className={cn("p-3 pointer-events-auto")}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </CardContent>
+              </Card>
               <Card>
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg">
@@ -312,8 +419,32 @@ export function ImportCalculator() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6">
-                  {result ? (
+                {result ? (
                     <div className="space-y-6">
+                      {/* Basic Info Summary */}
+                      {(basicInfo.namaBarang || basicInfo.negaraAsal || basicInfo.tanggalRencana) && (
+                        <div className="p-3 bg-secondary/50 rounded-lg border border-border">
+                          <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                            Info Barang
+                          </h4>
+                          <div className="space-y-1 text-sm">
+                            {basicInfo.namaBarang && (
+                              <p><span className="text-muted-foreground">Nama:</span> {basicInfo.namaBarang}</p>
+                            )}
+                            {basicInfo.beratBarang > 0 && (
+                              <p><span className="text-muted-foreground">Berat:</span> {basicInfo.beratBarang} kg</p>
+                            )}
+                            <p><span className="text-muted-foreground">Kegiatan:</span> {basicInfo.kegiatan}</p>
+                            {basicInfo.negaraAsal && (
+                              <p><span className="text-muted-foreground">Negara Asal:</span> {basicInfo.negaraAsal}</p>
+                            )}
+                            {basicInfo.tanggalRencana && (
+                              <p><span className="text-muted-foreground">Tanggal:</span> {format(basicInfo.tanggalRencana, "PPP", { locale: id })}</p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
                       {/* Customs Value Section */}
                       <div>
                         <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
