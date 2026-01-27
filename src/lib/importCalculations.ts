@@ -1,63 +1,65 @@
-// Exchange rates (hardcoded)
-export const EXCHANGE_RATES: Record<string, number> = {
-  USD: 16870,
-};
+import { ExchangeRate, TruckingOption, CalculationInput, CalculationResult } from "@/types";
 
-// Freight rates by region for FOB
+export const EXCHANGE_RATES: ExchangeRate[] = [
+  { code: "USD", rate: 16870, label: "USD - Dollar Amerika" },
+  { code: "EUR", rate: 19622.89, label: "EUR - Euro" },
+  { code: "JPY", rate: 10643.51, label: "JPY - Yen Jepang" },
+  { code: "CNY", rate: 2420.85, label: "CNY - Yuan China" },
+  { code: "SGD", rate: 13098.65, label: "SGD - Dollar Singapura" },
+  { code: "KRW", rate: 11.47, label: "KRW - Won Korea" },
+  { code: "LKR", rate: 54.57, label: "LKR - Rupee Sri Lanka" },
+  { code: "PHP", rate: 284.12, label: "PHP - Peso Philipina" },
+  { code: "SAR", rate: 4498.41, label: "SAR - Riyal Saudi Arabia" },
+  { code: "INR", rate: 186.51, label: "INR - Rupee India" },
+  { code: "PKR", rate: 58.89, label: "PKR - Rupee Pakistan" },
+  { code: "MMK", rate: 8.02, label: "MMK - Kyat Myanmar" },
+  { code: "CHF", rate: 21062.97, label: "CHF - Franc Swiss" },
+  { code: "SEK", rate: 1832, label: "SEK - Kroner Swedia" },
+  { code: "GBP", rate: 22636.17, label: "GBP - Poundsterling Inggris" },
+  { code: "NOK", rate: 1672.85, label: "NOK - Kroner Norwegia" },
+  { code: "NZD", rate: 9701.79, label: "NZD - Dollar Selandia Baru" },
+  { code: "MYR", rate: 4158.49, label: "MYR - Ringgit Malaysia" },
+  { code: "HKD", rate: 2163.37, label: "HKD - Dollar Hongkong" },
+  { code: "DKK", rate: 2626.3, label: "DKK - Kroner Denmark" },
+  { code: "CAD", rate: 12144.02, label: "CAD - Dollar Kanada" },
+  { code: "AUD", rate: 11288.22, label: "AUD - Dollar Australia" },
+];
+
+export const TRUCKING_OPTIONS: TruckingOption[] = [
+  { value: "20ft", label: "20ft Container", price: 1500000 },
+  { value: "40ft", label: "40ft Container", price: 1800000 },
+  { value: "45ft", label: "45ft Container", price: 2300000 },
+  { value: "FL", label: "Fuso / Long", price: 12500000 },
+];
+
 export const FREIGHT_RATES: Record<string, number> = {
   ASEAN: 0.05,
   Asia: 0.10,
   Europe: 0.15,
+  Other: 0.20,
 };
 
-// Insurance rate for FOB
 export const INSURANCE_RATE = 0.005;
 
-// Trucking costs by container type
-export const TRUCKING_COSTS: Record<string, number> = {
-  "20 ft": 1500000,
-  "40 ft": 1800000,
-  "45 ft": 2300000,
-  "FL": 12500000,
-};
+export const STORAGE_RATE_PER_KG_DAY = 54400;
 
-// Storage cost per kg per day
-export const STORAGE_RATE_PER_KG_PER_DAY = 54400;
-
-export interface CalculationInput {
-  currency: string;
-  goodsValue: number;
-  incoterm: "CIF" | "FOB";
-  region?: string;
-  bmRate: number;
-  ppnRate: number;
-  pphRate: number;
-  ppnbmRate: number;
-  truckingType: string;
-  storageWeight: number;
-  storageDays: number;
+export function getExchangeRate(currencyCode: string): number {
+  const currency = EXCHANGE_RATES.find((c) => c.code === currencyCode);
+  return currency?.rate || 16870;
 }
 
-export interface CalculationResult {
-  exchangeRate: number;
-  goodsValueIDR: number;
-  freight: number;
-  insurance: number;
-  customsValue: number;
-  beaMasuk: number;
-  importValue: number;
-  ppn: number;
-  pph: number;
-  ppnbm: number;
-  totalDutiesTaxes: number;
-  truckingCost: number;
-  storageCost: number;
-  totalInlandTransport: number;
-  totalDDP: number;
+export function getCurrencyLabel(currencyCode: string): string {
+  const currency = EXCHANGE_RATES.find((c) => c.code === currencyCode);
+  return currency?.label || currencyCode;
+}
+
+export function getTruckingCost(truckingType: string): number {
+  const option = TRUCKING_OPTIONS.find((t) => t.value === truckingType);
+  return option?.price || 0;
 }
 
 export function calculateImportCosts(input: CalculationInput): CalculationResult {
-  const exchangeRate = EXCHANGE_RATES[input.currency] || 16870;
+  const exchangeRate = getExchangeRate(input.currency);
   const goodsValueIDR = input.goodsValue * exchangeRate;
 
   let freight = 0;
@@ -83,8 +85,8 @@ export function calculateImportCosts(input: CalculationInput): CalculationResult
   const totalDutiesTaxes = beaMasuk + ppn + pph + ppnbm;
 
   // Inland transport
-  const truckingCost = TRUCKING_COSTS[input.truckingType] || 0;
-  const storageCost = STORAGE_RATE_PER_KG_PER_DAY * input.storageWeight * input.storageDays;
+  const truckingCost = getTruckingCost(input.truckingType);
+  const storageCost = STORAGE_RATE_PER_KG_DAY * input.storageWeight * input.storageDays;
   const totalInlandTransport = truckingCost + storageCost;
 
   // Total DDP
@@ -114,5 +116,13 @@ export function formatCurrency(value: number): string {
     style: "decimal",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
+  });
+}
+
+export function formatDecimal(value: number): string {
+  return value.toLocaleString("id-ID", {
+    style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 }

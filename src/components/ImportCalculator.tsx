@@ -15,12 +15,15 @@ import { ResultRow } from "./ResultRow";
 import {
   EXCHANGE_RATES,
   FREIGHT_RATES,
-  TRUCKING_COSTS,
+  TRUCKING_OPTIONS,
   calculateImportCosts,
   formatCurrency,
-  type CalculationInput,
-  type CalculationResult,
+  formatDecimal,
+  getExchangeRate,
+  getCurrencyLabel,
 } from "@/lib/importCalculations";
+import { STORAGE_RATE_PER_KG_DAY } from "@/lib/importCalculations";
+import { CalculationInput, CalculationResult } from "@/types";
 import { Calculator, RotateCcw, DollarSign, Ship, FileText, Truck, Package } from "lucide-react";
 
 const initialState: CalculationInput = {
@@ -32,7 +35,7 @@ const initialState: CalculationInput = {
   ppnRate: 11,
   pphRate: 2.5,
   ppnbmRate: 0,
-  truckingType: "20 ft",
+  truckingType: "20ft",
   storageWeight: 0,
   storageDays: 0,
 };
@@ -58,7 +61,8 @@ export function ImportCalculator() {
     setResult(null);
   };
 
-  const exchangeRate = EXCHANGE_RATES[input.currency] || 16870;
+  const exchangeRate = getExchangeRate(input.currency);
+  const currencyLabel = getCurrencyLabel(input.currency);
 
   return (
     <div className="min-h-screen bg-background py-8 px-4">
@@ -99,10 +103,10 @@ export function ImportCalculator() {
                     <SelectTrigger className="bg-card">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(EXCHANGE_RATES).map((currency) => (
-                        <SelectItem key={currency} value={currency}>
-                          {currency}
+                    <SelectContent className="max-h-[300px]">
+                      {EXCHANGE_RATES.map((currency) => (
+                        <SelectItem key={currency.code} value={currency.code}>
+                          {currency.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -111,7 +115,7 @@ export function ImportCalculator() {
 
                 <div className="p-3 bg-secondary rounded-lg">
                   <p className="text-sm text-secondary-foreground">
-                    Kurs: <span className="font-semibold">1 {input.currency} = Rp {formatCurrency(exchangeRate)}</span>
+                    Kurs: <span className="font-semibold">1 {input.currency} = Rp {formatDecimal(exchangeRate)}</span>
                   </p>
                 </div>
 
@@ -122,6 +126,14 @@ export function ImportCalculator() {
                   onChange={(value) => updateInput("goodsValue", value)}
                   prefix={`${input.currency} `}
                 />
+
+                {input.goodsValue > 0 && (
+                  <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
+                    <p className="text-sm text-foreground">
+                      Setara: <span className="font-semibold">Rp {formatCurrency(input.goodsValue * exchangeRate)}</span>
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -235,9 +247,9 @@ export function ImportCalculator() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {Object.entries(TRUCKING_COSTS).map(([type, cost]) => (
-                        <SelectItem key={type} value={type}>
-                          {type} - Rp {formatCurrency(cost)}
+                      {TRUCKING_OPTIONS.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label} - Rp {formatCurrency(option.price)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -261,7 +273,7 @@ export function ImportCalculator() {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Biaya timbun: Rp 54.400/kg/hari
+                  Biaya timbun: Rp {formatCurrency(STORAGE_RATE_PER_KG_DAY)}/kg/hari
                 </p>
               </CardContent>
             </Card>
