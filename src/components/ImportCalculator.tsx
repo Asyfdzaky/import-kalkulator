@@ -513,7 +513,7 @@ export function ImportCalculator() {
 
           {/* Footer */}
           <div className="text-center mt-12 text-sm text-muted-foreground">
-            <p>Import Simulation Calculator © 2024</p>
+            <p>Import Simulation Calculator © 2026</p>
             <p className="mt-1">Simulasi ini hanya untuk estimasi, bukan perhitungan resmi.</p>
           </div>
         </div>
