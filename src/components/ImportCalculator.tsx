@@ -406,10 +406,10 @@ export function ImportCalculator() {
 
             {/* Right Column - Results */}
             <div className="lg:sticky lg:top-8 h-fit">
-              <Card className="border-2 border-primary/20">
-                <CardHeader className="pb-4 bg-secondary/30 rounded-t-lg">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Package className="h-5 w-5 text-primary" />
+              <Card className="border-0 bg-[hsl(217,91%,20%)] text-white">
+                <CardHeader className="pb-4 rounded-t-lg">
+                  <CardTitle className="flex items-center gap-2 text-lg text-white">
+                    <Package className="h-5 w-5 text-white" />
                     Hasil Kalkulasi
                   </CardTitle>
                 </CardHeader>
@@ -418,23 +418,23 @@ export function ImportCalculator() {
                     <div className="space-y-6">
                       {/* Basic Info Summary */}
                       {(basicInfo.namaBarang || basicInfo.negaraAsal || basicInfo.tanggalRencana) && (
-                        <div className="p-3 bg-secondary/50 rounded-lg border border-border">
-                          <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                        <div className="p-3 bg-white/10 rounded-lg border border-white/20">
+                          <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wide mb-2">
                             Info Barang
                           </h4>
-                          <div className="space-y-1 text-sm">
+                          <div className="space-y-1 text-sm text-white">
                             {basicInfo.namaBarang && (
-                              <p><span className="text-muted-foreground">Nama:</span> {basicInfo.namaBarang}</p>
+                              <p><span className="text-white/70">Nama:</span> {basicInfo.namaBarang}</p>
                             )}
                             {basicInfo.beratBarang > 0 && (
-                              <p><span className="text-muted-foreground">Berat:</span> {basicInfo.beratBarang} kg</p>
+                              <p><span className="text-white/70">Berat:</span> {basicInfo.beratBarang} kg</p>
                             )}
-                            <p><span className="text-muted-foreground">Kegiatan:</span> {basicInfo.kegiatan}</p>
+                            <p><span className="text-white/70">Kegiatan:</span> {basicInfo.kegiatan}</p>
                             {basicInfo.negaraAsal && (
-                              <p><span className="text-muted-foreground">Negara Asal:</span> {basicInfo.negaraAsal}</p>
+                              <p><span className="text-white/70">Negara Asal:</span> {basicInfo.negaraAsal}</p>
                             )}
                             {basicInfo.tanggalRencana && (
-                              <p><span className="text-muted-foreground">Tanggal:</span> {format(basicInfo.tanggalRencana, "PPP", { locale: id })}</p>
+                              <p><span className="text-white/70">Tanggal:</span> {format(basicInfo.tanggalRencana, "PPP", { locale: id })}</p>
                             )}
                           </div>
                         </div>
@@ -442,7 +442,7 @@ export function ImportCalculator() {
 
                       {/* Customs Value Section */}
                       <div>
-                        <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+                        <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wide mb-3">
                           Nilai Pabean
                         </h4>
                         <div className="space-y-1">
@@ -460,7 +460,7 @@ export function ImportCalculator() {
 
                       {/* Duties & Taxes Section */}
                       <div>
-                        <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+                        <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wide mb-3">
                           Bea & Pajak
                         </h4>
                         <div className="space-y-1">
@@ -474,7 +474,7 @@ export function ImportCalculator() {
 
                       {/* Inland Transport Section */}
                       <div>
-                        <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+                        <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wide mb-3">
                           Biaya Inland
                         </h4>
                         <div className="space-y-1">
@@ -490,19 +490,19 @@ export function ImportCalculator() {
                       </div>
                       
                       {/* Taraa Message */}
-                      <div className="mt-4 p-4 bg-primary/10 rounded-lg border border-primary/30 text-center">
-                        <p className="text-base font-semibold text-foreground">
+                      <div className="mt-4 p-4 bg-white/10 rounded-lg border border-white/30 text-center">
+                        <p className="text-base font-semibold text-white">
                           💥 TARAA!! Kamu harus bayar sejumlah Rp {formatCurrency(result.totalDDP)} 💸
                         </p>
                       </div>
                     </div>
                   ) : (
                     <div className="text-center py-12">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary mb-4">
-                        <Calculator className="h-8 w-8 text-muted-foreground" />
+                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-4">
+                        <Calculator className="h-8 w-8 text-white/70" />
                       </div>
-                      <p className="text-muted-foreground">
-                        Masukkan data dan klik <strong>Hitung</strong> untuk melihat hasil
+                      <p className="text-white/70">
+                        Masukkan data dan klik <strong className="text-white">Hitung</strong> untuk melihat hasil
                       </p>
                     </div>
                   )}
