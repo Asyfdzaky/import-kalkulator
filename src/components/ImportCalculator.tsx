@@ -330,7 +330,6 @@ export function ImportCalculator() {
                       Tarif Bea Masuk, PPN, PPh, dan PPnBM dapat dilihat berdasarkan Kode HS di website INSW:
                     </p>
                     <Button
-                      variant="outline"
                       size="sm"
                       className="w-full"
                       asChild
