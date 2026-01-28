@@ -27,15 +27,15 @@ export function ResultRow({
       <span
         className={cn(
           "text-sm",
-          isHighlight || isTotal ? "font-semibold text-foreground" : "text-muted-foreground"
+          isHighlight || isTotal ? "font-semibold text-white" : "text-white/70"
         )}
       >
         {label}
       </span>
       <span
         className={cn(
-          "font-mono",
-          isTotal ? "text-xl font-bold text-success" : isHighlight ? "font-semibold text-foreground" : "text-foreground",
+          "font-mono text-white",
+          isTotal ? "text-xl font-bold" : isHighlight ? "font-semibold" : "",
         )}
       >
         Rp {formatCurrency(value)}
