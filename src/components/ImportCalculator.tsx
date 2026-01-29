@@ -36,7 +36,7 @@ const initialState: CalculationInput = {
   ppnRate: 11,
   pphRate: 2.5,
   ppnbmRate: 0,
-  truckingType: "20ft",
+  truckingType: "none",
   storageWeight: 0,
   storageDays: 0,
 };
@@ -361,7 +361,7 @@ export function ImportCalculator() {
                       <SelectContent>
                         {TRUCKING_OPTIONS.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
-                            {option.label} - Rp {formatCurrency(option.price)}
+                            {option.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -378,6 +378,7 @@ export function ImportCalculator() {
                         <SelectValue placeholder="Pilih lama timbun" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="0">0 Hari</SelectItem>
                         <SelectItem value="7">7 hari</SelectItem>
                         <SelectItem value="14">14 hari</SelectItem>
                         <SelectItem value="21">21 hari</SelectItem>

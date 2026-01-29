@@ -26,6 +26,7 @@ export const EXCHANGE_RATES: ExchangeRate[] = [
 ];
 
 export const TRUCKING_OPTIONS: TruckingOption[] = [
+  { value: "none", label: "Tidak Ada", price: 0 },
   { value: "20ft", label: "20ft Container", price: 1500000 },
   { value: "40ft", label: "40ft Container", price: 1800000 },
   { value: "45ft", label: "45ft Container", price: 2300000 },
